@@ -1,17 +1,37 @@
 from idlelib.replace import replace
-from email.message import EmailMessage
+import smtplib
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+my_login = os.getenv("my_login")
+
+my_pass = os.getenv("my_pass")
+
+server = smtplib.SMTP_SSL('smtp.yandex.ru', 465)
+
+server.login('my_login', 'my_pass')
+
+server.sendmail('rewaqz1@yandex.ru', 'Tovak23@yandex.ru', 'message')
+
+server.quit()
+
 my_name = "Сергей"
 friend_name = "Дмитрий"
 website = "https://dvmn.org/profession-ref-program/sergey.myamin/TK540/"
-letter = EmailMessage()
-letter['From'] = 'rewaqz1@yandex.ru'
-letter['To'] = 'Am1dok@yandex.ru'
-letter['Subject'] = 'Приглашение!'
+title = "Приглашение!"
+sender = "rewaqz1@yandex.ru"
+recipient = "Tovak23@yandex.ru"
+content = "text/plain; charset='UTF-8';"
 
+letter = ("""
+From: {s}
+To: {r}
+Subject: {t}
+Content-Type: {c}
 
-
-
-my_str = ("""Привет, %friend_name%! %my_name% приглашает тебя на сайт %website%!
+Привет, %friend_name%! %my_name% приглашает тебя на сайт %website%!
 
 %website% — это новая версия онлайн-курса по программированию. 
 Изучаем Python и не только. Решаем задачи. Получаем ревью от преподавателя. 
@@ -26,25 +46,17 @@ my_str = ("""Привет, %friend_name%! %my_name% приглашает теб�
 Все проекты — они же решение наших задачек — можно разместить на твоём GitHub. Работодатели такое оценят. 
 
 Регистрируйся → %website%  
-На курсы, которые еще не вышли, можно подписаться и получить уведомление о релизе сразу на имейл.""")
-my_str = my_str.replace('%friend_name%', friend_name)
+На курсы, которые еще не вышли, можно подписаться и получить уведомление о релизе сразу на имейл."""
+          .format(t=title, s=sender, r=recipient, w=website, m=my_name,f=friend_name, c=content ))
 
-my_str = my_str.replace('%my_name%',my_name)
+letter = letter.replace('%friend_name%', friend_name)
 
-my_str = my_str.replace('%website%', website)
+letter = letter.replace('%my_name%',my_name)
 
-my_str = my_str.replace('%friend_name%', friend_name)
+letter = letter.replace('%website%', website)
 
-letter.set_content(my_str, subtype='plain', charset='utf-8')
+letter = letter.replace('%friend_name%', friend_name)
 
+letter = letter.encode("UTF-8")
 
-
-
-
-my_str = my_str.replace('%website%', website)
-
-my_str = my_str.replace('%friend_name%', friend_name)
-
-my_str = my_str.replace('%my_name%',my_name)
-
-print(letter.set_content)
+print(letter)
