@@ -11,7 +11,7 @@ my_pass = os.getenv("my_pass")
 
 server = smtplib.SMTP_SSL('smtp.yandex.ru', 465)
 
-server.login('my_login', 'my_pass')
+server.login(my_login, my_pass)
 
 server.sendmail('rewaqz1@yandex.ru', 'Tovak23@yandex.ru', 'message')
 
